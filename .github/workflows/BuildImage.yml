@@ -1,0 +1,13 @@
+name: BuildImage.yml
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  checks:
+    name: checkout
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo hola
