@@ -44,6 +44,7 @@ jobs:
 
   push_aws:
     name: aws
+    needs: push_image
     runs-on: ubuntu-22.04
     steps:
       - name: Start ssh-agent
@@ -52,5 +53,14 @@ jobs:
           ssh-private-key: ${{ secrets.EC2_SSHKEY}}
       - name: hello_world
         run: |
-          cd /
+          pwd
           ls -la
+      - name: remove_all
+        run: |
+          docker ps -q | xargs -r docker stop
+          docker ps -aq | xargs -r docker rm -v
+          docker images -q | xargs -r docker rmi
+      - name: pull_docker
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/hardware-shop:latest
+          docker run -d -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/hardware-shop:latest

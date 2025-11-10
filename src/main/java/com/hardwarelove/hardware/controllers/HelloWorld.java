@@ -13,4 +13,9 @@ public class HelloWorld {
         return "Hello World";
     }
 
+    @GetMapping("/id")
+    public String sayHello2() {
+        return "Hello World id";
+    }
+
 }
