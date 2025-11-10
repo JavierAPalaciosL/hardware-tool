@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: build jar
-        run: mvn -B -DskipTests clean package
   push_image:
     needs:
       - checks
