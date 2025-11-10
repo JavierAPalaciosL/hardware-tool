@@ -60,9 +60,7 @@ jobs:
           docker ps -q | xargs -r docker stop
           docker ps -aq | xargs -r docker rm -v
           docker images -q | xargs -r docker rmi
-      - name: pull_docker
-        run: |
-          docker pull javierpalacios8080/hardware-shop:latest
       - name: deploy
         run: |
           docker run -d -p 80:8080 javierpalacios8080/hardware-shop:latest
+          
