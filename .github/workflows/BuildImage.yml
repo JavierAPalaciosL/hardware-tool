@@ -44,18 +44,21 @@ jobs:
 
   push_aws:
     name: aws
-    needs: push_image
     runs-on: ubuntu-22.04
     steps:
       - name: Start ssh-agent
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.EC2_SSHKEY}}
-      - name: Remove containers/images and deploy SSH
+          ssh-private-key: ${{ secrets.EC2_SSHKEY }}
+
+      - name: Remove containers/images + deploy via SSH (heredoc)
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} '
-            set -e
-            sudo docker ps -q | xargs -r sudo docker stop
-            sudo docker ps -aq | xargs -r sudo docker rm -v
-            sudo docker images -q | xargs -r sudo docker rmi -f
-            sudo docker run -d -p 80:8080 --name hardware-shop javierpalacios8080/hardware-shop:latest
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} <<'ENDSSH'
+          set -e
+          sudo docker ps -a
+          sudo docker images
+          sudo docker ps -q | xargs -r sudo docker stop
+          sudo docker ps -aq | xargs -r sudo docker rm -v
+          sudo docker images -q | xargs -r sudo docker rmi -f
+          sudo docker run -d -p 80:8080 --name hardware-shop javierpalacios8080/hardware-shop:latest
+          ENDSSH
