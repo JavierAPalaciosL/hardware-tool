@@ -42,3 +42,13 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/hardware-shop:latest
             ${{ secrets.DOCKER_USERNAME }}/hardware-shop:${{ github.sha }}
 
+  push_aws:
+    name: aws
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Start ssh-agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSHKEY}}
+      - name: hello_world
+        run: ls -la
