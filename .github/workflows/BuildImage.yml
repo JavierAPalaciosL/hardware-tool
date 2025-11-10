@@ -44,7 +44,7 @@ jobs:
 
   push_aws:
     name: aws
-    needs: push_image
+    #needs: push_image
     runs-on: ubuntu-22.04
     steps:
       - name: Start ssh-agent
@@ -63,4 +63,6 @@ jobs:
       - name: pull_docker
         run: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/hardware-shop:latest
+      - name: deploy
+        run: |
           docker run -d -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/hardware-shop:latest
