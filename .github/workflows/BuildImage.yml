@@ -51,14 +51,17 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSHKEY }}
 
-      - name: Remove containers/images + deploy via SSH (heredoc)
-        run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_SSHKEY }} <<'ENDSSH'
-          set -e
-          sudo docker ps -a
-          sudo docker images
-          sudo docker ps -q | xargs -r sudo docker stop
-          sudo docker ps -aq | xargs -r sudo docker rm -v
-          sudo docker images -q | xargs -r sudo docker rmi -f
-          sudo docker run -d -p 80:8080 --name hardware-shop javierpalacios8080/hardware-shop:latest
-          ENDSSH
+      - name: Deploy on EC2 (appleboy ssh)
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSHKEY }}
+          port: 22
+          script: |
+            sudo docker ps -a
+            sudo docker ps -q | xargs -r sudo docker stop
+            sudo docker ps -aq | xargs -r sudo docker rm -v
+            sudo docker images -q | xargs -r sudo docker rmi -f
+            sudo docker run -d -p 80:8080 --name hardware-shop javierpalacios8080/hardware-shop:latest
+      
