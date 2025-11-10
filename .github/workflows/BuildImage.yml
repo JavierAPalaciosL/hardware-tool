@@ -6,15 +6,7 @@ on:
       - master
 
 jobs:
-  checks:
-    name: checkout
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
   push_image:
-    needs:
-      - checks
     name: push_docker
     runs-on: ubuntu-22.04
     steps:
@@ -43,6 +35,7 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/hardware-shop:${{ github.sha }}
 
   push_aws:
+    needs: push_image
     name: aws
     runs-on: ubuntu-22.04
     steps:
@@ -64,4 +57,3 @@ jobs:
             sudo docker ps -aq | xargs -r sudo docker rm -v
             sudo docker images -q | xargs -r sudo docker rmi -f
             sudo docker run -d -p 80:8080 --name hardware-shop javierpalacios8080/hardware-shop:latest
-      

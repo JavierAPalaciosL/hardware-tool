@@ -15,7 +15,7 @@ public class HelloWorld {
 
     @GetMapping("/id")
     public String sayHello2() {
-        return "Hello World id";
+        return "End Hello World";
     }
 
 }
