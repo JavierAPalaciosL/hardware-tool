@@ -62,7 +62,7 @@ jobs:
           docker images -q | xargs -r docker rmi
       - name: pull_docker
         run: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/hardware-shop:latest
+          docker pull javierpalacios8080/hardware-shop:latest
       - name: deploy
         run: |
-          docker run -d -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/hardware-shop:latest
+          docker run -d -p 80:8080 javierpalacios8080/hardware-shop:latest
