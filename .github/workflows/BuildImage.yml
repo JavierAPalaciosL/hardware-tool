@@ -51,4 +51,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSHKEY}}
       - name: hello_world
-        run: ls -la
+        run: |
+          cd /
+          ls -la
