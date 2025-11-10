@@ -53,7 +53,7 @@ jobs:
 
       - name: Remove containers/images + deploy via SSH (heredoc)
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} <<'ENDSSH'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_SSHKEY }} <<'ENDSSH'
           set -e
           sudo docker ps -a
           sudo docker images
